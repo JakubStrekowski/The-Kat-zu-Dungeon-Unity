@@ -54,6 +54,7 @@ namespace The_Katzu_Dungeon
                 }
                 rowCounter++;
             }
+            display.RandomizeDungeonColor();
         }
 
         public void SwitchElements(int sourceX,int sourceY,int targetX,int targetY)
@@ -164,17 +165,17 @@ namespace The_Katzu_Dungeon
 
         public void SetFocus()
         {
-            if (gameMaster.hero.positionX < 33)
+            if (gameMaster.hero.positionX < 8)
             {
-                relativeCenterX = 33;
+                relativeCenterX = 8;
             }
             else
             {
                 relativeCenterX = gameMaster.hero.positionX;
             }
-            if (gameMaster.hero.positionX > mapColumnLimit - 33)
+            if (gameMaster.hero.positionX > mapColumnLimit - 8)
             {
-                relativeCenterX = mapColumnLimit - 33;
+                relativeCenterX = mapColumnLimit - 8;
             }
 
             if (gameMaster.hero.positionY < 8)
