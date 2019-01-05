@@ -15,7 +15,7 @@ namespace The_Katzu_Dungeon
             movementSequence =new int[4] { 2, 3, 0, 1 };
             hp = 2;
             attack = 1;
-
+            representedByID = 5;
         }
         public override void MovementBehaviour()
         {

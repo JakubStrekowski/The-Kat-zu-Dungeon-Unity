@@ -18,9 +18,12 @@ namespace The_Katzu_Dungeon
 
         public GameObject camera;
         public GameObject simpleTile;
-
+        
         private Color dungeonColor;
         private Color wallsColor;
+
+        
+
         public void DrawStory() { }
         public void DrawCredits() { }
         public void DisplayMap(Map mapObject, int centerX, int centerY) {
@@ -33,21 +36,58 @@ namespace The_Katzu_Dungeon
                     GameObject newTile = Instantiate(simpleTile, new Vector3(tile.positionX, tile.positionY,paramZ), Quaternion.identity);
                     newTile.GetComponent<SpriteRenderer>().sprite = ReturnSpriteByID(tile.representedByID);
                     if (tile.representedByID == 0) { newTile.GetComponent<SpriteRenderer>().color = dungeonColor; }
-                    if (tile.representedByID == 1) { newTile.GetComponent<SpriteRenderer>().color = wallsColor; }
+                    if (tile.representedByID == 1) { newTile.GetComponent<SpriteRenderer>().color = wallsColor;
+                        newTile.GetComponent<SpriteRenderer>().sortingOrder = 2;
+                    }
+                    if(tile is Character || tile is Consumable)
+                    {
+                        newTile.GetComponent<SpriteRenderer>().sortingOrder = 1;
+                        GameObject tileUnder=Instantiate(simpleTile, new Vector3(tile.positionX, tile.positionY, paramZ), Quaternion.identity);
+                        tileUnder.GetComponent<SpriteRenderer>().sprite = ReturnSpriteByID(0);
+                        tileUnder.GetComponent<SpriteRenderer>().color = dungeonColor;
+                    }
                 }
             }
             float z = camera.transform.position.z;
-            camera.transform.position = new Vector3(centerX, centerY, z);
+            camera.transform.position = new Vector3(centerX+0.5f, centerY + 0.5f, z);
         }
 
         public void RandomizeDungeonColor()
         {
             dungeonColor = new Color(Random.Range(0.3f, 0.7f), Random.Range(0.3f, 0.7f), Random.Range(0.3f, 0.7f));
-            wallsColor = new Color(dungeonColor.r - 0.2f, dungeonColor.g - 0.2f, dungeonColor.b - 0.2f);
+            wallsColor = new Color(Random.Range(0.15f, 0.4f), Random.Range(0.15f, 0.4f), Random.Range(0.15f, 0.4f));
         }
 
         public void RefreshFromMapAtPosition(Map mapObject, int posX, int posY)
         {
+            RaycastHit2D[] hit = Physics2D.RaycastAll((new Vector3(posX,posY, 0)),Vector2.zero);
+            
+            if (hit.Length != 0)
+            {
+                foreach(RaycastHit2D raycastHits in hit)
+                {
+                    GameObject.Destroy(raycastHits.collider.gameObject);
+                }
+                
+            }
+            
+            GameObject newTile = Instantiate(simpleTile, new Vector3(posX, posY, 0+(posY*0.01f)), Quaternion.identity);
+            newTile.GetComponent<SpriteRenderer>().sprite = ReturnSpriteByID(mapObject.tileMap[posY][posX].representedByID);
+            if (mapObject.tileMap[posY][posX].representedByID == 0) { newTile.GetComponent<SpriteRenderer>().color = dungeonColor; }
+            if (mapObject.tileMap[posY][posX].representedByID == 1) { newTile.GetComponent<SpriteRenderer>().color = wallsColor; }
+            if (mapObject.tileMap[posY][posX] is Character || mapObject.tileMap[posY][posX] is Consumable)
+            {
+                newTile.GetComponent<SpriteRenderer>().sortingOrder = 1;
+                GameObject tileUnder = Instantiate(simpleTile, new Vector3(posX, posY, 0 + (posY * 0.01f)), Quaternion.identity);
+                tileUnder.GetComponent<SpriteRenderer>().sprite = ReturnSpriteByID(0);
+                tileUnder.GetComponent<SpriteRenderer>().color = dungeonColor;
+            }
+        }
+
+        public void MoveFocus(int positionX, int positionY)
+        {
+            float z = camera.transform.position.z;
+            camera.transform.position = new Vector3(positionX + 0.5f, positionY + 0.5f, z);
         }
         public void DisplayMenu()
         {

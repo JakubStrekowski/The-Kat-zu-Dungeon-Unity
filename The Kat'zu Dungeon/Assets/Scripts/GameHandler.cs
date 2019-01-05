@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using UnityEngine;
 
 namespace The_Katzu_Dungeon
 {
@@ -18,13 +19,12 @@ namespace The_Katzu_Dungeon
         public Hero hero;
         int whatInControl = 0; //0-hero, 1-game menu, 2-death menu, 3-start menu, 4 ending
 
-        public GameHandler(DisplayScript display)
+        public GameHandler(DisplayScript display, GameInput gameInput)
         {
             enemiesOnMap = new List<Enemy>();
             this.display = display;
-            input = new GameInput();
             floorNumber = 1;
-
+            input = gameInput;
         }
 
         public void SetGold(int value)
@@ -69,7 +69,7 @@ namespace The_Katzu_Dungeon
 
             Map currentMap = new Map();
             enemiesOnMap = new List<Enemy>();
-            Random rnd = new Random();
+            System.Random rnd = new System.Random();
             if (floorNumber == 5)
             {
                 Map newMap1 = LoadMap("2.txt");
@@ -214,14 +214,12 @@ namespace The_Katzu_Dungeon
         {
             whatInControl = 0;
             bool heroAlife = true;
-            while (heroAlife)
-            {
+            
                 if (ResolveInput(input.TakeInput()))
                 {
                     ResolveTurn();
                 }
                 
-            }
         }
 
         public bool ResolveInput(String inputCommand)
@@ -231,12 +229,12 @@ namespace The_Katzu_Dungeon
                 
                 case "ArrowUp":
                     {
-                        hero.Move(0);
+                        hero.Move(1);
                     }
                     return true;
                 case "ArrowDown":
                     {
-                        hero.Move(1);
+                        hero.Move(0);
                     }
                     return true;
                 case "ArrowRight":

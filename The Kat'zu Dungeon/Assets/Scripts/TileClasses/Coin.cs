@@ -9,6 +9,7 @@ namespace The_Katzu_Dungeon.TileClasses
     {
         public Coin(int id, int posX, int posY, Map mp) : base(id, posX, posY, mp)
         {
+            representedByID = 7;
             passable = true;
         }
     }

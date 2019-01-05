@@ -12,6 +12,7 @@ namespace The_Katzu_Dungeon
         public HealthPotion(int id, int posX, int posY, Map mp) : base(id, posX, posY, mp) {
             name = "Health Potion";
             heal = 3;
+            representedByID = 8;
         }
         public override void UseEffect(Character value) {
             value.hp+=heal;

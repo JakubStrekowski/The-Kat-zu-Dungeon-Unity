@@ -17,7 +17,7 @@ namespace The_Katzu_Dungeon.TileClasses
             movementSequence = new int[4] { 1, 2, 0, 3 };
             hp = 3;
             attack = 1;
-
+            representedByID = 4;
         }
         public override void MovementBehaviour()
         {

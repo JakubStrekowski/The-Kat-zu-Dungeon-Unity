@@ -16,7 +16,7 @@ namespace The_Katzu_Dungeon
             rnd = new Random(posX*posY);
             hp = 3;
             attack = 1;
-            
+            representedByID = 3;
             int random = rnd.Next( 2);
             if (random == 0)
             {

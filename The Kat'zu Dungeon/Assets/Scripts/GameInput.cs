@@ -1,11 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using The_Katzu_Dungeon;
 using UnityEngine;
 
-public class GameInput
+public class GameInput:MonoBehaviour
 {
+    public GameMaster gameMaster;
+    private void Awake()
+    {
+        gameMaster = gameObject.GetComponent<GameMaster>();
+    }
 
-    
+    private void Update()
+    {
+        gameMaster.gameHandler.PlayInMap();
+    }
+
+
     public string TakeInput()
     {
         if (Input.GetKeyDown(KeyCode.UpArrow))
@@ -24,6 +35,6 @@ public class GameInput
         {
             return "ArrowLeft";
         }
-        return "asd";
+        return null;
     }
 }

@@ -76,13 +76,8 @@ namespace The_Katzu_Dungeon
             chara.standingOnTile = temporary;
             if (!dontShow)
             {
-                if(targetX - relativeCenterX>-33&& targetX - relativeCenterX<33&&sourceY-relativeCenterY>-8&&sourceY-relativeCenterY<8)
-                    if(sourceX - relativeCenterX > -33 && sourceX - relativeCenterX < 33 && targetY - relativeCenterY > -8 && targetY - relativeCenterY < 8)
-                    {
-                        display.RefreshFromMapAtPosition(this, sourceX, sourceY);
-                        display.RefreshFromMapAtPosition(this, targetX, targetY);
-                    }
-                
+                  display.RefreshFromMapAtPosition(this, sourceX, sourceY);
+                  display.RefreshFromMapAtPosition(this, targetX, targetY);
             }
         }
 
@@ -102,33 +97,15 @@ namespace The_Katzu_Dungeon
 
         public void MoveFocus(Hero hero)
         {
-            if (hero.positionX < 33)
-            {
-                relativeCenterX = 33;
-            }
-            else
-            {
+            
                 relativeCenterX =hero.positionX;
-            }
-            if (hero.positionX > mapColumnLimit - 33)
-            {
-                relativeCenterX= mapColumnLimit - 33;
-            }
-            if (hero.positionY < 8)
-            {
-                relativeCenterY = 8;
-            }
-            else
-            {
-                relativeCenterY =hero.positionY;
-            }
-            if (hero.positionY > mapRowLimit - 8)
-            {
-                relativeCenterY = mapRowLimit - 8;
-            }
+            
+            
+                relativeCenterY= hero.positionY;
+            
             hero.currentCenterPositionX=hero.positionX;
             hero.currentCenterPositionY=hero.positionY;
-            display.DisplayMap(this, relativeCenterX, relativeCenterY);
+            display.MoveFocus(hero.positionX, hero.positionY);
         }
         
         public void SendUIInfo(int valueID, String value)

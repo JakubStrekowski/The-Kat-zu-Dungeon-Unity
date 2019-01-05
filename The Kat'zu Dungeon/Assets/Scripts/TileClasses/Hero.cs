@@ -18,6 +18,7 @@ namespace The_Katzu_Dungeon
 
         public Hero(int id, int posX, int posY,Map mp): base(id, posX,posY, mp)
         {
+            representedByID = 2;
             isAlife = true;
             name = "Jan";
             hp = 6;
@@ -231,7 +232,7 @@ namespace The_Katzu_Dungeon
 
         public bool isNearBorder()
         {
-            if (positionX - currentCenterPositionX > 28 || positionX - currentCenterPositionX < -28 || positionY - currentCenterPositionY < -5 || positionY - currentCenterPositionY > 5)
+            if (positionX - currentCenterPositionX > 3 || positionX - currentCenterPositionX < -3 || positionY - currentCenterPositionY < -2 || positionY - currentCenterPositionY > 2)
             {
                 return true;
             }
