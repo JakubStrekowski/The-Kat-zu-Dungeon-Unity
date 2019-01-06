@@ -22,7 +22,12 @@ namespace The_Katzu_Dungeon
         private Color dungeonColor;
         private Color wallsColor;
 
-        
+        private void FindCamera()
+        {
+            camera = GameObject.Find("Main Camera");
+        }
+
+
 
         public void DrawStory() { }
         public void DrawCredits() { }
@@ -48,6 +53,7 @@ namespace The_Katzu_Dungeon
                     }
                 }
             }
+            FindCamera();
             float z = camera.transform.position.z;
             camera.transform.position = new Vector3(centerX+0.5f, centerY + 0.5f, z);
         }

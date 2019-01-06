@@ -18,13 +18,15 @@ namespace The_Katzu_Dungeon
         List<Enemy> enemiesOnMap;
         public Hero hero;
         int whatInControl = 0; //0-hero, 1-game menu, 2-death menu, 3-start menu, 4 ending
+        GameMaster gameMaster;
 
-        public GameHandler(DisplayScript display, GameInput gameInput)
+        public GameHandler(DisplayScript display, GameInput gameInput, GameMaster gameMaster)
         {
             enemiesOnMap = new List<Enemy>();
             this.display = display;
             floorNumber = 1;
             input = gameInput;
+            this.gameMaster = gameMaster;
         }
 
         public void SetGold(int value)
@@ -61,7 +63,7 @@ namespace The_Katzu_Dungeon
 
         public void NextLevel()
         {
-            floorNumber++;
+            gameMaster.NextLevel();
         }
 
         public Map GenerateRandom(int floorNumber)
@@ -110,11 +112,6 @@ namespace The_Katzu_Dungeon
             ChangeFloorNumber(floorNumber);
             display.SetStatUI(1, hero.name);
             display.SetStatUI(2, hero.hp.ToString());
-            
-            /*
-            display.SetStatUI(3, hero.ReturnWeaponName());
-            display.SetStatUI(4, hero.ReturnArmorName());
-            */
             display.SetStatUI(6, gold.ToString());
             display.SetStatUI(7, enemiesKilled.ToString());
             bool displayed = false;
@@ -187,10 +184,6 @@ namespace The_Katzu_Dungeon
             ChangeFloorNumber(floorNumber);
             display.SetStatUI(1, hero.name);
             display.SetStatUI(2, hero.hp.ToString());
-            /*
-            display.SetStatUI(3, hero.ReturnWeaponName());
-            display.SetStatUI(4, hero.ReturnArmorName());
-            */
             display.SetStatUI(6, gold.ToString());
             display.SetStatUI(7, enemiesKilled.ToString());
             bool displayed = false;
