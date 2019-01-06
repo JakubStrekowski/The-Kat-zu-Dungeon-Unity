@@ -16,6 +16,11 @@ namespace The_Katzu_Dungeon
         }
         public override void UseEffect(Character value) {
             value.hp+=heal;
+            if(value is Hero)
+            {
+                Hero heroValue = (Hero)value;
+                heroValue.maxHp += heal;
+            }
             currentMap.SendLog("You used " + name + " and healed for 3hp!");
             currentMap.SendUIInfo(2, value.hp.ToString());
         }

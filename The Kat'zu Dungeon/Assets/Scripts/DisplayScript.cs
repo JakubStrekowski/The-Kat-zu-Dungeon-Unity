@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace The_Katzu_Dungeon
 {
@@ -16,22 +17,32 @@ namespace The_Katzu_Dungeon
         public Sprite coin;
         public Sprite hpPotion;
 
-        public GameObject camera;
         public GameObject simpleTile;
-        
+
+
+        private Text heroNameTxt;
+        private Slider heroHpSlider;
+        private GameObject camera;
         private Color dungeonColor;
         private Color wallsColor;
 
-        private void FindCamera()
+        public void FindObjects()
         {
             camera = GameObject.Find("Main Camera");
+            heroNameTxt = GameObject.Find("HeroNameTxt").GetComponent<Text>();
+            heroHpSlider = GameObject.Find("HpSlider").GetComponent<Slider>();
         }
 
+        private void Awake()
+        {
+            FindObjects();
+        }
 
 
         public void DrawStory() { }
         public void DrawCredits() { }
         public void DisplayMap(Map mapObject, int centerX, int centerY) {
+            FindObjects();
             float paramZ = 0;
             foreach(Tile[] row in mapObject.tileMap)
             {
@@ -53,7 +64,6 @@ namespace The_Katzu_Dungeon
                     }
                 }
             }
-            FindCamera();
             float z = camera.transform.position.z;
             camera.transform.position = new Vector3(centerX+0.5f, centerY + 0.5f, z);
         }
@@ -121,7 +131,16 @@ namespace The_Katzu_Dungeon
         {
         }
         public void SetStatUI(int which, string value)
-        { }
+        {
+            switch (which)
+            {
+                case 1: heroNameTxt.text = value;break;
+                case 2: heroHpSlider.value = float.Parse(value);
+                    Debug.Log(value);
+                    break;
+                default:break;
+            }
+        }
         public void AddLog(string log)
         {
         }

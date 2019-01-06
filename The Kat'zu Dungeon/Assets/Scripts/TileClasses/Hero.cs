@@ -15,12 +15,14 @@ namespace The_Katzu_Dungeon
         public Weapon currentWeapon;
         public Armor currentArmor;
         public bool isAlife;
+        public int maxHp;
 
         public Hero(int id, int posX, int posY,Map mp): base(id, posX,posY, mp)
         {
             representedByID = 2;
             isAlife = true;
             name = "Jan";
+            maxHp = 6;
             hp = 6;
             passable = false;
             attack = 1;
@@ -154,7 +156,9 @@ namespace The_Katzu_Dungeon
         public override void GetDmg(int value)
         {
             hp = hp - (value - armor);
-            currentMap.SendUIInfo(2, hp.ToString());
+
+            float sliderHp = (float)hp / (float)maxHp;
+            currentMap.SendUIInfo(2, (sliderHp.ToString()));
             if (hp <= 0)
             {
                 isAlife = false;

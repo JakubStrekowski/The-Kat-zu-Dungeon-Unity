@@ -111,7 +111,10 @@ namespace The_Katzu_Dungeon
             hero.SetCurrentMap(currentMap);
             ChangeFloorNumber(floorNumber);
             display.SetStatUI(1, hero.name);
-            display.SetStatUI(2, hero.hp.ToString());
+            float sliderHp = (float)hero.hp / (float)hero.maxHp;
+            display.SetStatUI(2, sliderHp.ToString());
+            gameMaster.SendDebug(hero.hp + " " + hero.maxHp);
+            gameMaster.SendDebug(sliderHp.ToString());
             display.SetStatUI(6, gold.ToString());
             display.SetStatUI(7, enemiesKilled.ToString());
             bool displayed = false;
@@ -183,7 +186,10 @@ namespace The_Katzu_Dungeon
             hero.SetCurrentMap(currentMap);
             ChangeFloorNumber(floorNumber);
             display.SetStatUI(1, hero.name);
-            display.SetStatUI(2, hero.hp.ToString());
+            float sliderHp = (float)hero.hp / (float)hero.maxHp;
+            display.SetStatUI(2, sliderHp.ToString());
+            gameMaster.SendDebug(hero.hp + " " + hero.maxHp);
+            gameMaster.SendDebug(sliderHp.ToString());
             display.SetStatUI(6, gold.ToString());
             display.SetStatUI(7, enemiesKilled.ToString());
             bool displayed = false;

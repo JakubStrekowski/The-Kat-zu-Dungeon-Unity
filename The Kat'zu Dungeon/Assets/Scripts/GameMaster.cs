@@ -39,8 +39,14 @@ namespace The_Katzu_Dungeon
         {
             if (scene.buildIndex == 0)
             {
+                gameObject.GetComponent<DisplayScript>().FindObjects();
                 gameHandler.GenerateRandom(dungeonLevel);
             }
+        }
+
+        public void SendDebug(string s)
+        {
+            Debug.Log(s);
         }
     }
 }
