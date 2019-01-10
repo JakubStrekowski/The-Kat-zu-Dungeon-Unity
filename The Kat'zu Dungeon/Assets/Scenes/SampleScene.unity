@@ -442,7 +442,6 @@ MonoBehaviour:
   rat: {fileID: 21300000, guid: dd52c885fbbc74c4f8ebf804be87e11f, type: 3}
   coin: {fileID: 21300000, guid: cd2be976968a30441842254225cadf21, type: 3}
   hpPotion: {fileID: 21300000, guid: 1de50826cf1487643ba08f296f07d11c, type: 3}
-  camera: {fileID: 519420028}
   simpleTile: {fileID: 1163061725575160, guid: 7c96a810cc1f03b4ab4d462a22663106, type: 2}
 --- !u!1 &228615194
 GameObject:
@@ -529,7 +528,7 @@ GameObject:
   - component: {fileID: 256812616}
   - component: {fileID: 256812617}
   m_Layer: 5
-  m_Name: Slider
+  m_Name: HpSlider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

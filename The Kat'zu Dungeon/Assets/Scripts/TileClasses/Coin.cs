@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace The_Katzu_Dungeon.TileClasses
+namespace The_Katzu_Dungeon
 {
     class Coin:Tile
     {

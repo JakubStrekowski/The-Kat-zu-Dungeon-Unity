@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+
 
 namespace The_Katzu_Dungeon
 {
@@ -18,23 +20,34 @@ namespace The_Katzu_Dungeon
         public Sprite hpPotion;
 
         public GameObject simpleTile;
-
-
+        private InputField logInput;
         private Text heroNameTxt;
+        private Text[] items;
         private Slider heroHpSlider;
         private GameObject camera;
         private Color dungeonColor;
         private Color wallsColor;
+
+        private int logCounter;
+        private int logNumber;
 
         public void FindObjects()
         {
             camera = GameObject.Find("Main Camera");
             heroNameTxt = GameObject.Find("HeroNameTxt").GetComponent<Text>();
             heroHpSlider = GameObject.Find("HpSlider").GetComponent<Slider>();
+            for(int i = 1; i < 7; i++)
+            {
+                items[i - 1] = GameObject.Find("Item" + i.ToString()).GetComponent<Text>();
+            }
+            logInput = GameObject.Find("LogInput").GetComponent<InputField>();
         }
 
         private void Awake()
         {
+            logCounter = 0;
+            logNumber = 0;
+            items = new Text[6];
             FindObjects();
         }
 
@@ -55,7 +68,7 @@ namespace The_Katzu_Dungeon
                     if (tile.representedByID == 1) { newTile.GetComponent<SpriteRenderer>().color = wallsColor;
                         newTile.GetComponent<SpriteRenderer>().sortingOrder = 2;
                     }
-                    if(tile is Character || tile is Consumable)
+                    if(tile is Character || tile is Consumable||tile is Coin)
                     {
                         newTile.GetComponent<SpriteRenderer>().sortingOrder = 1;
                         GameObject tileUnder=Instantiate(simpleTile, new Vector3(tile.positionX, tile.positionY, paramZ), Quaternion.identity);
@@ -136,13 +149,22 @@ namespace The_Katzu_Dungeon
             {
                 case 1: heroNameTxt.text = value;break;
                 case 2: heroHpSlider.value = float.Parse(value);
-                    Debug.Log(value);
                     break;
                 default:break;
             }
         }
+
         public void AddLog(string log)
         {
+            logCounter = (logCounter + 1);
+            logNumber= (logNumber + 1) % 1000;
+            if (logCounter > 7)
+            {
+                logCounter = 1;
+                logInput.text = "";
+            }
+            logInput.text +=(logNumber).ToString()+". "+ log + '\n';
+            logInput.MoveTextEnd(true);
         }
             private void PrintLastLog()
         {
@@ -151,6 +173,13 @@ namespace The_Katzu_Dungeon
 
         public void RefreshItem(int idInList, string newName)
         {
+            if (idInList == -1)
+            {
+            }
+            else
+            {
+                items[idInList].text = (idInList + 1).ToString() + ". " + newName;
+            }
         }
 
         public Sprite ReturnSpriteByID(int id)

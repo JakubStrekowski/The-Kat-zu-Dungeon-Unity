@@ -211,14 +211,10 @@ namespace The_Katzu_Dungeon
 
         public void PlayInMap()
         {
-            whatInControl = 0;
-            bool heroAlife = true;
-            
                 if (ResolveInput(input.TakeInput()))
                 {
                     ResolveTurn();
                 }
-                
         }
 
         public bool ResolveInput(String inputCommand)

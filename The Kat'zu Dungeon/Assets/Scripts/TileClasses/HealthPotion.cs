@@ -20,9 +20,10 @@ namespace The_Katzu_Dungeon
             {
                 Hero heroValue = (Hero)value;
                 heroValue.maxHp += heal;
+                float sliderHp = (float)heroValue.hp / (float)heroValue.maxHp;
+                currentMap.SendUIInfo(2, (sliderHp.ToString()));
             }
             currentMap.SendLog("You used " + name + " and healed for 3hp!");
-            currentMap.SendUIInfo(2, value.hp.ToString());
         }
     }
 }
