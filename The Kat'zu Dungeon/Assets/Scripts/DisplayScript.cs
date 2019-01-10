@@ -26,6 +26,8 @@ namespace The_Katzu_Dungeon
         private InputField logInput;
         private Text heroNameTxt;
         private Text[] items;
+        private Text goldAmmnt;
+        private Text enemiesKilled;
         private Slider heroHpSlider;
         private GameObject camera;
         private Color dungeonColor;
@@ -38,12 +40,15 @@ namespace The_Katzu_Dungeon
         {
             camera = GameObject.Find("Main Camera");
             heroNameTxt = GameObject.Find("HeroNameTxt").GetComponent<Text>();
+            goldAmmnt = GameObject.Find("moneyTxt").GetComponent<Text>();
+            enemiesKilled = GameObject.Find("killsTxt").GetComponent<Text>();
             heroHpSlider = GameObject.Find("HpSlider").GetComponent<Slider>();
             for(int i = 1; i < 7; i++)
             {
                 items[i - 1] = GameObject.Find("Item" + i.ToString()).GetComponent<Text>();
             }
             logInput = GameObject.Find("LogInput").GetComponent<InputField>();
+
         }
 
         private void Awake()
@@ -161,6 +166,9 @@ namespace The_Katzu_Dungeon
                 case 1: heroNameTxt.text = value;break;
                 case 2: heroHpSlider.value = float.Parse(value);
                     break;
+                case 6: goldAmmnt.text = "x " + value;break;
+                case 7: enemiesKilled.text = "x " + value;break;
+
                 default:break;
             }
         }
