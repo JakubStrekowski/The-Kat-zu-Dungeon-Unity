@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using UnityEngine;
+using System.Threading;
 
 namespace The_Katzu_Dungeon
 {
@@ -214,7 +215,8 @@ namespace The_Katzu_Dungeon
                 if (ResolveInput(input.TakeInput()))
                 {
                     ResolveTurn();
-                }
+                
+            }
         }
 
         public bool ResolveInput(String inputCommand)

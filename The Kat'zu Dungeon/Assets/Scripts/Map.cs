@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using The_Katzu_Dungeon.TileClasses;
 
 namespace The_Katzu_Dungeon
@@ -73,11 +74,15 @@ namespace The_Katzu_Dungeon
             Tile temporary = tileMap[targetY][targetX];
             tileMap[targetY][targetX] = tileMap[sourceY][sourceX];
             tileMap[sourceY][sourceX] = chara.standingOnTile;
+            if (sourceX > targetX) { display.AnimateTile(3, sourceX, sourceY, targetX,targetY,this); }
+            if (sourceX < targetX) { display.AnimateTile(2, sourceX, sourceY, targetX, targetY, this); }
+            if (sourceY > targetY) { display.AnimateTile(0, sourceX, sourceY, targetX, targetY, this); }
+            if (sourceY < targetY) { display.AnimateTile(1, sourceX, sourceY, targetX, targetY, this); }
             chara.standingOnTile = temporary;
             if (!dontShow)
             {
-                  display.RefreshFromMapAtPosition(this, sourceX, sourceY);
-                  display.RefreshFromMapAtPosition(this, targetX, targetY);
+                //display.RefreshFromMapAtPosition(this, sourceX, sourceY);
+               // display.RefreshFromMapAtPosition(this, targetX, targetY);
             }
         }
 
@@ -199,9 +204,9 @@ namespace The_Katzu_Dungeon
             display.DisplayCrown();
         }
         
-        public void Animate(int positionX, int positionY, int whichAnim)
+        public void Animate(int positionX, int positionY, int whichAnim, int targetX, int targetY)
         {
-            display.AnimateTile(whichAnim, positionX, positionY);
+            display.AnimateTile(whichAnim, positionX, positionY,targetX,targetY,this);
         }
     }
 }

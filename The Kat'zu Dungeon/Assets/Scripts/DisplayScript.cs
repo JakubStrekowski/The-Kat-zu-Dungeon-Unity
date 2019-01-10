@@ -66,17 +66,21 @@ namespace The_Katzu_Dungeon
                 foreach(Tile tile in row)
                 {
                     GameObject newTile = Instantiate(simpleTile, new Vector3(tile.positionX, tile.positionY,paramZ), Quaternion.identity);
-                    newTile.GetComponent<SpriteRenderer>().sprite = ReturnSpriteByID(tile.representedByID);
-                    if (tile.representedByID == 0) { newTile.GetComponent<SpriteRenderer>().color = dungeonColor; }
-                    if (tile.representedByID == 1) { newTile.GetComponent<SpriteRenderer>().color = wallsColor;
-                        newTile.GetComponent<SpriteRenderer>().sortingOrder = 2;
+                    newTile.GetComponentInChildren<SpriteRenderer>().sprite = ReturnSpriteByID(tile.representedByID);
+                    if (tile.representedByID == 0) { newTile.GetComponentInChildren<SpriteRenderer>().color = dungeonColor; }
+                    if (tile.representedByID == 1) { newTile.GetComponentInChildren<SpriteRenderer>().color = wallsColor;
+                        newTile.GetComponentInChildren<SpriteRenderer>().sortingOrder = 2;
                     }
                     if(tile is Character || tile is Consumable||tile is Coin)
                     {
-                        newTile.GetComponent<SpriteRenderer>().sortingOrder = 1;
+                        newTile.GetComponentInChildren<SpriteRenderer>().sortingOrder = 1;
                         GameObject tileUnder=Instantiate(simpleTile, new Vector3(tile.positionX, tile.positionY, paramZ), Quaternion.identity);
-                        tileUnder.GetComponent<SpriteRenderer>().sprite = ReturnSpriteByID(0);
-                        tileUnder.GetComponent<SpriteRenderer>().color = dungeonColor;
+                        tileUnder.GetComponentInChildren<SpriteRenderer>().sprite = ReturnSpriteByID(0);
+                        tileUnder.GetComponentInChildren<SpriteRenderer>().color = dungeonColor;
+                    }
+                    if(tile is Character)
+                    {
+                        newTile.tag = "Character";
                     }
                 }
             }
@@ -104,15 +108,19 @@ namespace The_Katzu_Dungeon
             }
             
             GameObject newTile = Instantiate(simpleTile, new Vector3(posX, posY, 0+(posY*0.01f)), Quaternion.identity);
-            newTile.GetComponent<SpriteRenderer>().sprite = ReturnSpriteByID(mapObject.tileMap[posY][posX].representedByID);
-            if (mapObject.tileMap[posY][posX].representedByID == 0) { newTile.GetComponent<SpriteRenderer>().color = dungeonColor; }
-            if (mapObject.tileMap[posY][posX].representedByID == 1) { newTile.GetComponent<SpriteRenderer>().color = wallsColor; }
+            newTile.GetComponentInChildren<SpriteRenderer>().sprite = ReturnSpriteByID(mapObject.tileMap[posY][posX].representedByID);
+            if (mapObject.tileMap[posY][posX].representedByID == 0) { newTile.GetComponentInChildren<SpriteRenderer>().color = dungeonColor; }
+            if (mapObject.tileMap[posY][posX].representedByID == 1) { newTile.GetComponentInChildren<SpriteRenderer>().color = wallsColor; }
             if (mapObject.tileMap[posY][posX] is Character || mapObject.tileMap[posY][posX] is Consumable|| mapObject.tileMap[posY][posX] is Coin)
             {
-                newTile.GetComponent<SpriteRenderer>().sortingOrder = 1;
+                newTile.GetComponentInChildren<SpriteRenderer>().sortingOrder = 1;
                 GameObject tileUnder = Instantiate(simpleTile, new Vector3(posX, posY, 0 + (posY * 0.01f)), Quaternion.identity);
-                tileUnder.GetComponent<SpriteRenderer>().sprite = ReturnSpriteByID(0);
-                tileUnder.GetComponent<SpriteRenderer>().color = dungeonColor;
+                tileUnder.GetComponentInChildren<SpriteRenderer>().sprite = ReturnSpriteByID(0);
+                tileUnder.GetComponentInChildren<SpriteRenderer>().color = dungeonColor;
+            }
+            if (mapObject.tileMap[posY][posX] is Character)
+            {
+                newTile.tag = "Character";
             }
         }
 
@@ -206,22 +214,40 @@ namespace The_Katzu_Dungeon
             return toReturn;
         }
 
-        public void AnimateTile(int animationID,int positionX,int positionY)
+        public void AnimateTile(int animationID,int positionX,int positionY,int targetX, int targetY,Map map)
         {
             RaycastHit2D[] hit = Physics2D.RaycastAll((new Vector3(positionX, positionY, 0)), Vector2.zero);
-
+            GameObject hitCharacter=null;
+            foreach (RaycastHit2D ht in hit)
+            {
+                if (ht.collider.gameObject.transform.parent.tag == "Character")
+                {
+                    hitCharacter = ht.collider.gameObject;
+                }
+            }
+            hitCharacter.GetComponentInChildren<SpriteRenderer>().sprite = ReturnSpriteByID(map.tileMap[targetY][targetX].representedByID);
             if (hit.Length != 0)
             {
-                Animator animator=hit[0].collider.gameObject.GetComponent<Animator>();
+                Animator animator = hitCharacter.GetComponentInChildren<Animator>();
+                
+                //animator.SetInteger("MoveDirection", animationID);
                 switch (animationID)
                 {
-                    case 0:animator.Play("GoUp");break;
-                    case 1: animator.Play("GoDown"); break;
+                    case 0: animator.Play("GoDown"); break;
+                    case 1: animator.Play("GoUp"); break;
                     case 2: animator.Play("GoRight"); break;
                     case 3: animator.Play("GoLeft"); break;
                     default:break;
                 }
+                StartCoroutine(DestroyAfterAnimation(hitCharacter, targetX,targetY,map));
         }
         }
+
+        IEnumerator DestroyAfterAnimation(GameObject gmObject,int targetX,int targetY,Map map)
+        {
+            yield return new WaitForSeconds(0.2f);
+            Destroy(gmObject);
+            RefreshFromMapAtPosition(map, targetX, targetY);
         }
+    }
     }
