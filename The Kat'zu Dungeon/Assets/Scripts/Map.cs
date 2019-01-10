@@ -199,5 +199,9 @@ namespace The_Katzu_Dungeon
             display.DisplayCrown();
         }
         
+        public void Animate(int positionX, int positionY, int whichAnim)
+        {
+            display.AnimateTile(whichAnim, positionX, positionY);
+        }
     }
 }

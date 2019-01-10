@@ -40,7 +40,14 @@ namespace The_Katzu_Dungeon
             if (scene.buildIndex == 0)
             {
                 gameObject.GetComponent<DisplayScript>().FindObjects();
-                gameHandler.GenerateRandom(dungeonLevel);
+                if (dungeonLevel < 5)
+                {
+                    gameHandler.GenerateRandom(dungeonLevel);
+                }
+                if (dungeonLevel == 5)
+                {
+                    gameHandler.LoadMap("1.txt");
+                }
             }
         }
 

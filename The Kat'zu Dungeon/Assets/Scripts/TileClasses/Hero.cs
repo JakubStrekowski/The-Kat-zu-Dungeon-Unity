@@ -44,23 +44,27 @@ namespace The_Katzu_Dungeon
             switch (direction)
             {
                 case 0:
+                    representedByID = 2;
                     targetPositionY = targetPositionY - 1;
                     Tile neighbor0;
                     neighbor0 = currentMap.GiveNeighbor(positionX, positionY, 0);
                     IfIsOther(neighbor0, targetPositionX, targetPositionY);
                     break;
                 case 1:
+                    representedByID = 10;
                     targetPositionY = targetPositionY + 1;
                     Tile neighbor1 = currentMap.GiveNeighbor(positionX, positionY, 1);
                     IfIsOther(neighbor1, targetPositionX, targetPositionY);
                     break;
                 case 2:
+                    representedByID = 9;
                     Tile neighbor2;
                     targetPositionX = targetPositionX + 1;
                     neighbor2 = currentMap.GiveNeighbor(positionX, positionY, 2);
                     IfIsOther(neighbor2, targetPositionX, targetPositionY);
                     break;
                 case 3:
+                    representedByID = 11;
                     Tile neighbor3;
                     targetPositionX = targetPositionX - 1 ;
                     neighbor3 = currentMap.GiveNeighbor(positionX, positionY, 3);

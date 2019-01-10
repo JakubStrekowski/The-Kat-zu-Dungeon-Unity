@@ -18,6 +18,9 @@ namespace The_Katzu_Dungeon
         public Sprite rat;
         public Sprite coin;
         public Sprite hpPotion;
+        public Sprite backHero;
+        public Sprite sideHero;
+        public Sprite sideLeftHero;
 
         public GameObject simpleTile;
         private InputField logInput;
@@ -104,7 +107,7 @@ namespace The_Katzu_Dungeon
             newTile.GetComponent<SpriteRenderer>().sprite = ReturnSpriteByID(mapObject.tileMap[posY][posX].representedByID);
             if (mapObject.tileMap[posY][posX].representedByID == 0) { newTile.GetComponent<SpriteRenderer>().color = dungeonColor; }
             if (mapObject.tileMap[posY][posX].representedByID == 1) { newTile.GetComponent<SpriteRenderer>().color = wallsColor; }
-            if (mapObject.tileMap[posY][posX] is Character || mapObject.tileMap[posY][posX] is Consumable)
+            if (mapObject.tileMap[posY][posX] is Character || mapObject.tileMap[posY][posX] is Consumable|| mapObject.tileMap[posY][posX] is Coin)
             {
                 newTile.GetComponent<SpriteRenderer>().sortingOrder = 1;
                 GameObject tileUnder = Instantiate(simpleTile, new Vector3(posX, posY, 0 + (posY * 0.01f)), Quaternion.identity);
@@ -196,10 +199,29 @@ namespace The_Katzu_Dungeon
                 case 6: toReturn = rat; break;
                 case 7: toReturn = coin; break;
                 case 8: toReturn = hpPotion; break;
+                case 9: toReturn = sideHero;break;
+                case 10: toReturn = backHero;break;
+                case 11:toReturn = sideLeftHero;break;
             }
             return toReturn;
         }
 
+        public void AnimateTile(int animationID,int positionX,int positionY)
+        {
+            RaycastHit2D[] hit = Physics2D.RaycastAll((new Vector3(positionX, positionY, 0)), Vector2.zero);
 
+            if (hit.Length != 0)
+            {
+                Animator animator=hit[0].collider.gameObject.GetComponent<Animator>();
+                switch (animationID)
+                {
+                    case 0:animator.Play("GoUp");break;
+                    case 1: animator.Play("GoDown"); break;
+                    case 2: animator.Play("GoRight"); break;
+                    case 3: animator.Play("GoLeft"); break;
+                    default:break;
+                }
+        }
+        }
         }
     }
