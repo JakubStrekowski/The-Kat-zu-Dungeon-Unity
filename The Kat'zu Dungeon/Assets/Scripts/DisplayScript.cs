@@ -163,7 +163,7 @@ namespace The_Katzu_Dungeon
         {
             switch (which)
             {
-                case 1: heroNameTxt.text = value;break;
+                case 1: heroNameTxt.text = System.Environment.UserName;break;
                 case 2: heroHpSlider.value = float.Parse(value);
                     break;
                 case 6: goldAmmnt.text = "x " + value;break;
@@ -237,8 +237,6 @@ namespace The_Katzu_Dungeon
             if (hit.Length != 0)
             {
                 Animator animator = hitCharacter.GetComponentInChildren<Animator>();
-                
-                //animator.SetInteger("MoveDirection", animationID);
                 switch (animationID)
                 {
                     case 0: animator.Play("GoDown"); break;
