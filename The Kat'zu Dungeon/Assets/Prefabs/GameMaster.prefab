@@ -1,0 +1,91 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1323077894805978}
+  m_IsPrefabAsset: 1
+--- !u!1 &1323077894805978
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4008634917842462}
+  - component: {fileID: 114180673947506144}
+  - component: {fileID: 114642588328561330}
+  - component: {fileID: 114160752573577038}
+  m_Layer: 0
+  m_Name: GameMaster
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4008634917842462
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1323077894805978}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.7595893, y: 0.73418826, z: 0.080078125}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114160752573577038
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1323077894805978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: febe98d23e7412b4b998f8354cd37698, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  basicFloor: {fileID: 21300000, guid: 8cd769e7484372f4fa8d7b472cd2b66f, type: 3}
+  basicWall: {fileID: 21300000, guid: 0a95d2fef13c3af4e8d259b21ab1e856, type: 3}
+  hero: {fileID: 21300000, guid: a861b234c137e134fbc004b2296420d6, type: 3}
+  zombie: {fileID: 21300000, guid: 2500173a28bdda94b8e14c4d9a308bfb, type: 3}
+  slime: {fileID: 21300000, guid: e30518f57133ea243ac11d8558416512, type: 3}
+  skelton: {fileID: 21300000, guid: 17da93c9f3dc31448b85de045c78f30e, type: 3}
+  rat: {fileID: 21300000, guid: dd52c885fbbc74c4f8ebf804be87e11f, type: 3}
+  coin: {fileID: 21300000, guid: cd2be976968a30441842254225cadf21, type: 3}
+  hpPotion: {fileID: 21300000, guid: 1de50826cf1487643ba08f296f07d11c, type: 3}
+  backHero: {fileID: 21300000, guid: d50561a19d7cad641a6331bdcb01f34f, type: 3}
+  sideHero: {fileID: 21300000, guid: 5c55590a5806ab14582ee14c4ed0249b, type: 3}
+  sideLeftHero: {fileID: 21300000, guid: 1e925f747a15bcb4d93dc178d67779da, type: 3}
+  simpleTile: {fileID: 1488636248701848, guid: 22fc90d62018e994f9b57762027af492, type: 2}
+--- !u!114 &114180673947506144
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1323077894805978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b32709e567680764e95ff387e365dc43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114642588328561330
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1323077894805978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c01306d757cdd5546a7a410be0edc0d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameMaster: {fileID: 114180673947506144}
