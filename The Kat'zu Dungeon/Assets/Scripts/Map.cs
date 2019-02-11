@@ -56,6 +56,7 @@ namespace The_Katzu_Dungeon
                 rowCounter++;
             }
             display.RandomizeDungeonColor();
+            
         }
 
         public void SwitchElements(int sourceX,int sourceY,int targetX,int targetY)
@@ -70,20 +71,22 @@ namespace The_Katzu_Dungeon
 
         public void StepOnElement(int sourceX,int sourceY, int targetX, int targetY)
         {
-            Character chara = (Character)tileMap[sourceY][sourceX];
-            Tile temporary = tileMap[targetY][targetX];
-            tileMap[targetY][targetX] = tileMap[sourceY][sourceX];
-            tileMap[sourceY][sourceX] = chara.standingOnTile;
-            if (sourceX > targetX) { display.AnimateTile(3, sourceX, sourceY, targetX,targetY,this); }
-            if (sourceX < targetX) { display.AnimateTile(2, sourceX, sourceY, targetX, targetY, this); }
-            if (sourceY > targetY) { display.AnimateTile(0, sourceX, sourceY, targetX, targetY, this); }
-            if (sourceY < targetY) { display.AnimateTile(1, sourceX, sourceY, targetX, targetY, this); }
-            chara.standingOnTile = temporary;
-            if (!dontShow)
-            {
-                //display.RefreshFromMapAtPosition(this, sourceX, sourceY);
-               // display.RefreshFromMapAtPosition(this, targetX, targetY);
-            }
+            
+                Character chara = (Character)tileMap[sourceY][sourceX];
+                Tile temporary = tileMap[targetY][targetX];
+                tileMap[targetY][targetX] = tileMap[sourceY][sourceX];
+                tileMap[sourceY][sourceX] = chara.standingOnTile;
+                if (sourceX > targetX) { display.AnimateTile(3, sourceX, sourceY, targetX, targetY, this); }
+                if (sourceX < targetX) { display.AnimateTile(2, sourceX, sourceY, targetX, targetY, this); }
+                if (sourceY > targetY) { display.AnimateTile(0, sourceX, sourceY, targetX, targetY, this); }
+                if (sourceY < targetY) { display.AnimateTile(1, sourceX, sourceY, targetX, targetY, this); }
+                chara.standingOnTile = temporary;
+                if (!dontShow)
+                {
+                    //display.RefreshFromMapAtPosition(this, sourceX, sourceY);
+                    // display.RefreshFromMapAtPosition(this, targetX, targetY);
+                }
+            
         }
 
         public Tile GiveNeighbor(int posX, int posY, int direction) //direction going: 0-up, 1-down, 2-right, 3-left
@@ -207,6 +210,11 @@ namespace The_Katzu_Dungeon
         public void Animate(int positionX, int positionY, int whichAnim, int targetX, int targetY)
         {
             display.AnimateTile(whichAnim, positionX, positionY,targetX,targetY,this);
+        }
+
+        public void RefreshVision(int posX, int posY)
+        {
+            display.RefreshVisibility(posX, posY, tileMap);
         }
     }
 }

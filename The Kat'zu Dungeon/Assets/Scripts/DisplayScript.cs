@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-
+using The_Katzu_Dungeon.TileClasses;
 
 namespace The_Katzu_Dungeon
 {
@@ -33,6 +33,8 @@ namespace The_Katzu_Dungeon
         private Color dungeonColor;
         private Color wallsColor;
 
+        private int heroVision = 6;
+
         private int logCounter;
         private int logNumber;
 
@@ -59,6 +61,17 @@ namespace The_Katzu_Dungeon
             FindObjects();
         }
 
+        private void SetVisible(GameObject tile,bool toVisible)
+        {
+            if (toVisible)
+            {
+                tile.GetComponentInChildren<SpriteRenderer>().enabled = true;
+            }
+            else
+            {
+                tile.GetComponentInChildren<SpriteRenderer>().enabled = false;
+            }
+        }
 
         public void DrawStory() { }
         public void DrawCredits() { }
@@ -82,11 +95,13 @@ namespace The_Katzu_Dungeon
                         GameObject tileUnder=Instantiate(simpleTile, new Vector3(tile.positionX, tile.positionY, paramZ), Quaternion.identity);
                         tileUnder.GetComponentInChildren<SpriteRenderer>().sprite = ReturnSpriteByID(0);
                         tileUnder.GetComponentInChildren<SpriteRenderer>().color = dungeonColor;
+                        SetVisible(tileUnder, false);
                     }
                     if(tile is Character)
                     {
                         newTile.tag = "Character";
                     }
+                    SetVisible(newTile, false);
                 }
             }
             float z = camera.transform.position.z;
@@ -122,11 +137,57 @@ namespace The_Katzu_Dungeon
                 GameObject tileUnder = Instantiate(simpleTile, new Vector3(posX, posY, 0 + (posY * 0.01f)), Quaternion.identity);
                 tileUnder.GetComponentInChildren<SpriteRenderer>().sprite = ReturnSpriteByID(0);
                 tileUnder.GetComponentInChildren<SpriteRenderer>().color = dungeonColor;
+                SetVisible(tileUnder, mapObject.tileMap[posY][posX].isVisible);
             }
             if (mapObject.tileMap[posY][posX] is Character)
             {
                 newTile.tag = "Character";
             }
+            SetVisible(newTile, mapObject.tileMap[posY][posX].isVisible);
+        }
+
+        public void RefreshVisibility(int heroPosX, int heroPosY, Tile[][] tileMap)
+        {
+            foreach(Tile[] tileSet in tileMap)
+            {
+                foreach(Tile tile in tileSet)
+                {
+                    tile.isVisible = false;
+                    RaycastHit2D[] hit = Physics2D.RaycastAll((new Vector3(tile.positionX, tile.positionY, 0)), Vector2.zero);
+                    foreach (RaycastHit2D ht in hit)
+                    {
+                        SetVisible(ht.collider.gameObject, false);
+                    }
+                }
+            }
+            for (int i = 0; i < 360; i++)
+            {
+                float x = Mathf.Cos((float)i * 0.01745f); 
+                float y = Mathf.Sin((float)i * 0.01745f);
+                DoFov(x, y,heroPosX,heroPosY,tileMap);
+            }
+        }
+
+        private void DoFov(float x, float y, int heroPosX, int heroPosY, Tile[][] tileMap)
+        {
+            int i;
+            float ox, oy;
+            ox = (float)heroPosX + 0.5f;
+            oy = (float)heroPosY + 0.5f;
+            for (i = 0; i < heroVision; i++)
+            {
+                RaycastHit2D[] hit = Physics2D.RaycastAll((new Vector3((int)ox, (int)oy, 0)), Vector2.zero);
+                foreach (RaycastHit2D ht in hit)
+                {
+                    tileMap[(int)oy][(int)ox].isVisible = true;
+                    SetVisible(ht.collider.gameObject, true);
+                }
+                
+                if (tileMap[(int)oy][(int)ox] is Wall)
+                    return;
+                ox += x;
+                oy += y;
+            };
         }
 
         public void MoveFocus(int positionX, int positionY)
@@ -134,6 +195,9 @@ namespace The_Katzu_Dungeon
             float z = camera.transform.position.z;
             camera.transform.position = new Vector3(positionX + 0.5f, positionY + 0.5f, z);
         }
+
+        
+
         public void DisplayMenu()
         {
         }
@@ -222,10 +286,10 @@ namespace The_Katzu_Dungeon
             return toReturn;
         }
 
-        public void AnimateTile(int animationID,int positionX,int positionY,int targetX, int targetY,Map map)
+        public void AnimateTile(int animationID, int positionX, int positionY, int targetX, int targetY, Map map)
         {
             RaycastHit2D[] hit = Physics2D.RaycastAll((new Vector3(positionX, positionY, 0)), Vector2.zero);
-            GameObject hitCharacter=null;
+            GameObject hitCharacter = null;
             foreach (RaycastHit2D ht in hit)
             {
                 if (ht.collider.gameObject.transform.parent.tag == "Character")
@@ -233,21 +297,24 @@ namespace The_Katzu_Dungeon
                     hitCharacter = ht.collider.gameObject;
                 }
             }
-            hitCharacter.GetComponentInChildren<SpriteRenderer>().sprite = ReturnSpriteByID(map.tileMap[targetY][targetX].representedByID);
-            if (hit.Length != 0)
-            {
-                Animator animator = hitCharacter.GetComponentInChildren<Animator>();
-                switch (animationID)
+                hitCharacter.GetComponentInChildren<SpriteRenderer>().sprite = ReturnSpriteByID(map.tileMap[targetY][targetX].representedByID);
+                if (hit.Length != 0)
                 {
-                    case 0: animator.Play("GoDown"); break;
-                    case 1: animator.Play("GoUp"); break;
-                    case 2: animator.Play("GoRight"); break;
-                    case 3: animator.Play("GoLeft"); break;
-                    default:break;
+                    Animator animator = hitCharacter.GetComponentInChildren<Animator>();
+
+                    switch (animationID)
+                    {
+                        case 0: animator.Play("GoDown"); break;
+                        case 1: animator.Play("GoUp"); break;
+                        case 2: animator.Play("GoRight"); break;
+                        case 3: animator.Play("GoLeft"); break;
+                        default: break;
+                    }
+                    StartCoroutine(DestroyAfterAnimation(hitCharacter, targetX, targetY, map));
+
                 }
-                StartCoroutine(DestroyAfterAnimation(hitCharacter, targetX,targetY,map));
-        }
-        }
+            }
+        
 
         IEnumerator DestroyAfterAnimation(GameObject gmObject,int targetX,int targetY,Map map)
         {

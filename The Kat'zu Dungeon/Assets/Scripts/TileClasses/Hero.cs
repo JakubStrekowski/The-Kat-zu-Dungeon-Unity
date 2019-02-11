@@ -71,6 +71,7 @@ namespace The_Katzu_Dungeon
                     IfIsOther(neighbor3, targetPositionX, targetPositionY);
                     break;
             }
+            currentMap.RefreshVision(positionX, positionY);
             Thread.Sleep(200);
         }
 

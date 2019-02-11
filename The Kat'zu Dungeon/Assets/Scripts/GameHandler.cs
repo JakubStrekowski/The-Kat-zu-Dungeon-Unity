@@ -130,6 +130,7 @@ namespace The_Katzu_Dungeon
             }
             whatInControl = 0;
             currentMap.SetFocus();
+            display.RefreshVisibility(hero.positionX, hero.positionY, currentMap.tileMap);
             return newMap;
         }
 

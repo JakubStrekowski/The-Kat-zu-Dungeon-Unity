@@ -13,9 +13,11 @@ namespace The_Katzu_Dungeon
         public bool passable;
         public int representedByID;
         public Map currentMap;
+        public bool isVisible;
 
         public Tile(int id, int posX, int posY,Map mp)
         {
+            isVisible = false;
             currentMap = mp;
             representedByID = id;
             positionX = posX;
