@@ -14,10 +14,13 @@ namespace The_Katzu_Dungeon
         public int representedByID;
         public Map currentMap;
         public bool isVisible;
+        public bool wasVisited;
 
+       
         public Tile(int id, int posX, int posY,Map mp)
         {
             isVisible = false;
+            wasVisited = false;
             currentMap = mp;
             representedByID = id;
             positionX = posX;

@@ -85,7 +85,7 @@ namespace The_Katzu_Dungeon
                 {
                     GameObject newTile = Instantiate(simpleTile, new Vector3(tile.positionX, tile.positionY,paramZ), Quaternion.identity);
                     newTile.GetComponentInChildren<SpriteRenderer>().sprite = ReturnSpriteByID(tile.representedByID);
-                    if (tile.representedByID == 0) { newTile.GetComponentInChildren<SpriteRenderer>().color = dungeonColor; }
+                    if (tile.representedByID == 0) { newTile.GetComponentInChildren<SpriteRenderer>().color = dungeonColor; newTile.tag = "Floor"; }
                     if (tile.representedByID == 1) { newTile.GetComponentInChildren<SpriteRenderer>().color = wallsColor;
                         newTile.GetComponentInChildren<SpriteRenderer>().sortingOrder = 2;
                     }
@@ -95,6 +95,7 @@ namespace The_Katzu_Dungeon
                         GameObject tileUnder=Instantiate(simpleTile, new Vector3(tile.positionX, tile.positionY, paramZ), Quaternion.identity);
                         tileUnder.GetComponentInChildren<SpriteRenderer>().sprite = ReturnSpriteByID(0);
                         tileUnder.GetComponentInChildren<SpriteRenderer>().color = dungeonColor;
+                        tileUnder.tag = "Floor";
                         SetVisible(tileUnder, false);
                     }
                     if(tile is Character)
@@ -117,12 +118,16 @@ namespace The_Katzu_Dungeon
         public void RefreshFromMapAtPosition(Map mapObject, int posX, int posY)
         {
             RaycastHit2D[] hit = Physics2D.RaycastAll((new Vector3(posX,posY, 0)),Vector2.zero);
-            
+            Color floorColor=dungeonColor;
             if (hit.Length != 0)
             {
                 foreach(RaycastHit2D raycastHits in hit)
                 {
-                    GameObject.Destroy(raycastHits.collider.gameObject);
+                    if (raycastHits.collider.gameObject.transform.parent.tag == "Floor")
+                    {
+                        floorColor = raycastHits.collider.gameObject.GetComponent<SpriteRenderer>().color;
+                    }
+                    GameObject.Destroy(raycastHits.collider.gameObject.transform.parent.gameObject);
                 }
                 
             }
@@ -136,8 +141,11 @@ namespace The_Katzu_Dungeon
                 newTile.GetComponentInChildren<SpriteRenderer>().sortingOrder = 1;
                 GameObject tileUnder = Instantiate(simpleTile, new Vector3(posX, posY, 0 + (posY * 0.01f)), Quaternion.identity);
                 tileUnder.GetComponentInChildren<SpriteRenderer>().sprite = ReturnSpriteByID(0);
-                tileUnder.GetComponentInChildren<SpriteRenderer>().color = dungeonColor;
-                SetVisible(tileUnder, mapObject.tileMap[posY][posX].isVisible);
+                tileUnder.GetComponentInChildren<SpriteRenderer>().color = floorColor;
+                tileUnder.tag = "Floor";
+                if(!mapObject.tileMap[posY][posX].isVisible&&!mapObject.tileMap[posY][posX].wasVisited)
+                SetVisible(tileUnder, false);
+                
             }
             if (mapObject.tileMap[posY][posX] is Character)
             {
@@ -156,7 +164,15 @@ namespace The_Katzu_Dungeon
                     RaycastHit2D[] hit = Physics2D.RaycastAll((new Vector3(tile.positionX, tile.positionY, 0)), Vector2.zero);
                     foreach (RaycastHit2D ht in hit)
                     {
-                        SetVisible(ht.collider.gameObject, false);
+                        if (!tile.isVisible && tile.wasVisited)
+                        {
+                            ht.collider.gameObject.GetComponentInChildren<SpriteRenderer>().color = 
+                                Color.Lerp(ht.collider.gameObject.GetComponentInChildren<SpriteRenderer>().color, Color.black, 0.15f);
+                        }
+                        else
+                        {
+                            SetVisible(ht.collider.gameObject, false);
+                        }
                     }
                 }
             }
@@ -180,7 +196,26 @@ namespace The_Katzu_Dungeon
                 foreach (RaycastHit2D ht in hit)
                 {
                     tileMap[(int)oy][(int)ox].isVisible = true;
+                    tileMap[(int)oy][(int)ox].wasVisited = true;
                     SetVisible(ht.collider.gameObject, true);
+                    if (ht.collider.gameObject.transform.parent.tag == "Floor")
+                    {
+                        ht.collider.gameObject.GetComponentInChildren<SpriteRenderer>().color = dungeonColor;
+                    }
+                    else
+                    {
+                        if (tileMap[(int)oy][(int)ox] is Character || tileMap[(int)oy][(int)ox] is Consumable || tileMap[(int)oy][(int)ox] is Coin)
+                        {
+                            ht.collider.gameObject.GetComponentInChildren<SpriteRenderer>().color = Color.white;
+                        }
+                        else
+                        {
+                            if (tileMap[(int)oy][(int)ox] is Wall)
+                            {
+                                ht.collider.gameObject.GetComponentInChildren<SpriteRenderer>().color = wallsColor;
+                            }
+                        }
+                    }
                 }
                 
                 if (tileMap[(int)oy][(int)ox] is Wall)
@@ -298,6 +333,7 @@ namespace The_Katzu_Dungeon
                 }
             }
                 hitCharacter.GetComponentInChildren<SpriteRenderer>().sprite = ReturnSpriteByID(map.tileMap[targetY][targetX].representedByID);
+               // hitCharacter.GetComponentInChildren<SpriteRenderer>().color = Color.white;
                 if (hit.Length != 0)
                 {
                     Animator animator = hitCharacter.GetComponentInChildren<Animator>();
