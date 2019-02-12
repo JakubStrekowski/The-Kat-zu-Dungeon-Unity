@@ -21,6 +21,7 @@ namespace The_Katzu_Dungeon
         public Sprite backHero;
         public Sprite sideHero;
         public Sprite sideLeftHero;
+        public Sprite stairs;
 
         public GameObject simpleTile;
         private InputField logInput;
@@ -85,7 +86,7 @@ namespace The_Katzu_Dungeon
                 {
                     GameObject newTile = Instantiate(simpleTile, new Vector3(tile.positionX, tile.positionY,paramZ), Quaternion.identity);
                     newTile.GetComponentInChildren<SpriteRenderer>().sprite = ReturnSpriteByID(tile.representedByID);
-                    if (tile.representedByID == 0) { newTile.GetComponentInChildren<SpriteRenderer>().color = dungeonColor; newTile.tag = "Floor"; }
+                    if (tile.representedByID == 0|| tile.representedByID == 12) { newTile.GetComponentInChildren<SpriteRenderer>().color = dungeonColor; newTile.tag = "Floor"; }
                     if (tile.representedByID == 1) { newTile.GetComponentInChildren<SpriteRenderer>().color = wallsColor;
                         newTile.GetComponentInChildren<SpriteRenderer>().sortingOrder = 2;
                     }
@@ -317,6 +318,7 @@ namespace The_Katzu_Dungeon
                 case 9: toReturn = sideHero;break;
                 case 10: toReturn = backHero;break;
                 case 11:toReturn = sideLeftHero;break;
+                case 12:toReturn = stairs;break;
             }
             return toReturn;
         }
